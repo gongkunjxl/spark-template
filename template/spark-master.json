@@ -301,6 +301,6 @@
     }
   ],
   "labels": {
-    "template": "app-template"
+    "template": "spark-cluster"
   }
 }

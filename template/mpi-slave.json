@@ -2,12 +2,12 @@
   "kind": "Template",
   "apiVersion": "v1",
   "metadata": {
-    "name": "spark-slave",
+    "name": "mpi-slave",
     "creationTimestamp": null,
     "annotations": {
-      "description": "Spark Slave",
-      "iconClass": "icon-nginx",
-      "tags": "spark"
+      "description": "Hadoop Slave",
+      "iconClass": "icon-angularjs",
+      "tags": "mpi"
     }
   },
   "objects": [
@@ -20,16 +20,10 @@
       },
       "spec": {
         "ports": [
-           {
-             "name": "app112",
-             "protocol": "TCP",
-             "port": 22,
-             "targetPort": 22,
-             "nodePort": 0
-           }, {
+          {
             "name": "app1",
             "protocol": "TCP",
-            "port": 7373,
+            "port": 22,
             "targetPort": 7373,
             "nodePort": 0
           },{
@@ -134,18 +128,6 @@
             "port": 50060,
             "targetPort": 50060,
             "nodePort": 0
-          },{
-            "name": "app19",
-            "protocol": "TCP",
-            "port": 8080,
-            "targetPort": 8080,
-            "nodePort": 0
-          },{
-            "name": "app20",
-            "protocol": "TCP",
-            "port": 8081,
-            "targetPort": 8081,
-            "nodePort": 0
           }
         ],
         "selector": {
@@ -190,9 +172,9 @@
           "spec": {
             "containers": [
               {
-                "name": "spark-slave",
-                "image": "172.30.188.127:5000/openshift/spark-slave:0.1.0",
-                "command": ["bash","-c","export JOIN_IP=$SPARK_MASTER_SERVICE_HOST;/root/start-ssh-serf.sh ; ssh -o StrictHostKeyChecking=no $JOIN_IP \"/root/config.sh;/root/restart.sh\"; sleep 365d"],
+                "name": "mpi-slave",
+                "image": "172.30.188.127:5000/openshift/mpi-slave:0.1.0",
+                "command": ["bash","-c","export JOIN_IP=$MPI_MASTER_SERVICE_HOST;/root/start-ssh-serf.sh ; ssh -o StrictHostKeyChecking=no $JOIN_IP \"/root/config.sh;\"; sleep 365d"],
                 "ports": [
                   {
                     "containerPort": 22,
@@ -251,12 +233,6 @@
                   },{
                     "containerPort": 50060,
                     "protocol": "TCP"
-                  },{
-                    "containerPort": 8080,
-                    "protocol": "TCP"
-                  },{
-                    "containerPort": 8081,
-                    "protocol": "TCP"
                   }
                 ],
                 "env": [
@@ -293,11 +269,11 @@
     {
       "name": "APP_SERVICE_NAME",
       "description": "Application service name",
-      "value": "spark-slave",
+      "value": "mpi-slave",
       "required": true
     }
   ],
   "labels": {
-    "template": "spark-cluster"
+    "template": "mpi-cluster"
   }
 }
